@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/home/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+    
+    <title>Home Funcionario </title>
+</head>
+<body>
+    <div class="nombre">
+        {{Funcionario.getNombre}}
+    </div>
+        <div class="opciones">
+            <form action ="/registro" method="POST">{% csrf_token %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input class = "boton" type="submit" value="Crear Usuario">
+            </form> 
+            <form action ="/registro" method="GET">{% csrf_token %}
+                <input class = "boton" type="button" value="Dejar Bicicleta" >
+            </form>
+            <form action ="/registro" method="GET">{% csrf_token %}
+                <input class = "boton" type="button" value="Sacar Bicicleta">
+            </form>
+            <form action ="/registro" method="GET">{% csrf_token %}
+                <input class = "boton" type="button" value="Agregar Elemento">
+            </form>
+        </div>
+</body>
+</html>

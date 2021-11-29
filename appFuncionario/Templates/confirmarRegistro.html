@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+    
+    <title>Confirmar Registro</title>
+</head>
+<body>
+    <div class ="tabla">
+        <form method="POST"> {% csrf_token %}
+            <h1> Confirmar Registro</h1>
+            <table>
+                <tbody>
+                    <tr>
+                        <td> Rut</td>
+                        <td>{{Cliente.getRutFormato}}</td>
+                    </tr>
+                    <tr>
+                        <td> Correo</td>
+                        <td>{{Cliente.getCorreo}}</td>
+                    </tr>
+                    <tr>
+                        <td> Nombre</td>
+                        <td>{{Cliente.getNombre}}</td>
+                    </tr>
+                    <tr>
+                        <td> Telefono</td>
+                        <td>
+                            {{Cliente.getTelefono}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" aling="center">
+                            <input class = "boton" type="submit" value="Confirmar">
+                            <input class = "boton" type="button" value="Cancelar">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

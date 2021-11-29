@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    {% load static %}
+
+    <link rel="stylesheet"  href="{% static 'appFuncionario/login/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+</head>
+<body>
+    <div class="tabla">
+        <tr>
+            <td>
+                <form class = "login" action= "/home" method="POST">
+                    {% csrf_token %}
+                    <label for="username" >Usuario</label>
+                    <input type="text" id="username" name="username" class = "label">
+                    <label for="pwd">Contraseña</label>
+                    <input type="password" id="pwd" name="pwd" class = "label">
+                    <input class = "boton" type="submit" value="Ingresar">
+                </form> 
+        </tr>
+    </div>
+</body>
+</html>
