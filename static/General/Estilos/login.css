@@ -1,23 +1,16 @@
-.opciones{
+.recuadroNT{
     display: grid;
     background-color: #EEFFFB;
-    width: 500px;
-    height: 250px;
-    margin-left: 680px;
-    margin-top: 50px;
-    border-radius: 20px;
-    padding: 20px;
     text-align: center;
     background: rgba(0, 0, 0, 0.438);
 }
-
-.nombre {
-    margin-left: 230px;
-    margin-top: 65px; 
-    font-family: 'Courgette', sans-serif;
-    font-weight: normal;
-    font-size:48px;
-    color: #000000;
+#login{
+    width: 300px;
+    height: 250px;
+    margin-left: 180px;
+    margin-top: 160px;
+    border-radius: 20px;
+    padding: 20px;
 }
 body {
     font-family: 'Overpass', sans-serif;
@@ -25,8 +18,7 @@ body {
     font-size: 100%;
     color: #ffffff;
     margin: 0;
-    /* background-color: #55a89d; */
-    background: url(../home/imagenes/background.jpg) no-repeat center top ;
+    background: url(../../appFuncionario/Imagenes/fondoLogin.jpg) no-repeat center top ;
     background-size: cover;
 }
 

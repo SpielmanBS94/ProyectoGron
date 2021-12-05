@@ -1,0 +1,20 @@
+#contentMD{
+    background-color: rgb(0, 0, 0);
+}
+#headerMD,#bodyMD{
+    text-align: center;
+    font-size:200%;
+}
+#textoMD{
+    font-size:100%;
+}
+#campoIngresoMD{
+    background-color: rgb(122, 122, 122);
+    border: 0;
+    width: 80%;
+}
+#cerrarMD{
+    margin-top: -6%;
+    color:rgb(255, 255, 255);
+    font-size: 30px;
+}

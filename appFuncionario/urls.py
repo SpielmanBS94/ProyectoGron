@@ -11,4 +11,5 @@ urlpatterns = [
     path('registro',registro),
     path('confirmarRegistro',confirmarRegistro),
     path('confirmado',confirmado),
+    path('almacenar',almacenar)
 ]

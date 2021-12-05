@@ -49,11 +49,12 @@ class Funcionario(models.Model):
     rut = models.CharField(max_length = 10, primary_key = True)
     usuario = models.CharField(max_length = 20)
     contrasena = models.CharField(max_length = 20)
+    imagen=models.ImageField(null=True,upload_to = 'funcionarios/', default = 'funcionarios/userDefault.png')
 
     def getRut(self):
         return self.rut
 
-    def getNombre(self):
+    def getUser(self):
         return self.usuario
 
     def crearServicio(self,tipo):
@@ -69,6 +70,8 @@ class Funcionario(models.Model):
         return True
     def __str__(self):
         return "Funcionario: %s Nombre: %s " %(self.rut,self.usuario)
+    def getImg(self):
+        return self.imagen.url
 
 class Tarjeta(models.Model):
 

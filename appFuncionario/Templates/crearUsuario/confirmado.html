@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     {% load static %}
     {% load qr_code %}
-    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario/style.css' %}">
-    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario.css' %}">   
     
     <title>Registro Listo</title>
 </head>
 <body>
     <h1 id="centrar"> Imprima la tarjeta y entregesela a Cliente</h1>
     <div class="container">
-        <img src="{% static 'appFuncionario/crearUsuario/tarjeta.png' %}">
+        <img src="{% static 'appFuncionario/imagenes/tarjeta.png' %}">
         <div class="qr">
             {% qr_from_text Cliente.getRut size=16 version=1%}
         </div>

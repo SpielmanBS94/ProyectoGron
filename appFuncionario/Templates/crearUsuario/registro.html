@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario/style.css' %}">
-    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
     
     <title>Registro Clientes</title>
 </head>
@@ -33,14 +34,18 @@
                         <td><input class= "ingreso" type="text" placeholder="Ingrese Telefono" name="telefono"></td>
                     </tr>
                     <tr>
-                        <td colspan="2" aling="center">
-                            <input class = "boton" type="submit" value="Registrar">
-                            <input class = "boton" type="button" value="Cancelar">
+                        <td><input class = "boton" type="submit" value="Registrar"></form></td>
+                        <td>
+                            <form action= "/home" method="GET">{% csrf_token %}
+                                <input type="hidden" name="accion" value = "delServ">
+                                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                                <input class = "boton" type="submit" value="Cancelar">
+                            </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </form>
     </div> 
 </body>
 </html>

@@ -3,29 +3,56 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    <link rel="stylesheet"  href="{% static 'appFuncionario/home/style.css' %}">
-    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
-    
-    <title>Home Funcionario </title>
+    {% include 'super/modalIngresarRut.html' %}  
+    <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <title>Home</title>
 </head>
 <body>
-    <div class="nombre">
-        {{Funcionario.getNombre}}
+    <div class = "recuadroNT" id="funcionario">
+        <p id="nombreUser">Usuario : {{Funcionario.getUser}}</br>Fecha : {{Fecha}}</p>
+        <img class="fotoPerfil" src= {{ MEDIA_URL }}{{Funcionario.getImg}}>
+        <input class = "boton" type="button" value="Cambiar Foto" id="btCambiarFoto" >
+        <input class = "boton" type="button" value="Cambiar Pass" id="btCambiarPass" >
+        <input class = "boton" type="button" value="Cerrar Sesion" id="btLogout" >
     </div>
-        <div class="opciones">
-            <form action ="/registro" method="POST">{% csrf_token %}
-            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-            <input class = "boton" type="submit" value="Crear Usuario">
-            </form> 
-            <form action ="/registro" method="GET">{% csrf_token %}
-                <input class = "boton" type="button" value="Dejar Bicicleta" >
-            </form>
-            <form action ="/registro" method="GET">{% csrf_token %}
-                <input class = "boton" type="button" value="Sacar Bicicleta">
-            </form>
-            <form action ="/registro" method="GET">{% csrf_token %}
-                <input class = "boton" type="button" value="Agregar Elemento">
-            </form>
-        </div>
+    <div class = "recuadroNT" id="opciones">
+        <p id="lbOpciones">Servicios Cliente</p>
+        <form action ="/registro" method="GET">{% csrf_token %}
+        <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#validarRut" id="btAlmacenar"></button>
+        </form> 
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btRetirar" >
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btReservar">
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btSolicitar">
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btPagar">
+        </form>
+    </div>
+    <div class = "recuadroNT" id="opciones">
+        <p id="lbOpciones">Servicios Funcionario</p>
+        <form action ="/registro" method="POST">{% csrf_token %}
+        <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+        <input class = "botonOpcion" type="submit" value="" id="btCrearUsuario">
+        </form> 
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btActualizar" >
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btIngresar">
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btIncidente">
+        </form>
+        <form action ="/registro" method="GET">{% csrf_token %}
+            <input class = "botonOpcion" type="button" value=""id="btGron">
+        </form>
+    </div>
 </body>
 </html>

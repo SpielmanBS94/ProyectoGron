@@ -4,14 +4,14 @@
     <title>Log In</title>
     {% load static %}
 
-    <link rel="stylesheet"  href="{% static 'appFuncionario/login/style.css' %}">
-    <link rel="icon" type="image/jpg" href="{% static 'appFuncionario/login/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'general/estilos/login.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'General/imagenes/logo.png' %}">
 </head>
 <body>
     <div class="tabla">
         <tr>
             <td>
-                <form class = "login" action= "/home" method="POST">
+                <form class = "recuadroNT" action= "/home" method="POST" id="login">
                     {% csrf_token %}
                     <label for="username" >Usuario</label>
                     <input type="text" id="username" name="username" class = "label">
