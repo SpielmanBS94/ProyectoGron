@@ -1,0 +1,55 @@
+#cliente{
+    display:grid;
+    grid-template-columns: [primera]50% [segunda]50%[end];
+    grid-template-rows: [primera]30% [segunda]30% repeat(3,10% [botones])[end];
+    width: 100%;
+    margin-left: 20%;
+    border-radius: 20px;
+    padding: 20px;
+}
+#fotoPerfClient{
+    height: 3cm;
+    width: 3cm;
+    margin-left: 33%;
+    grid-column: 1 / 3;
+    grid-row: 1;
+    border-radius: 1cm;
+}
+#infoCliente{
+    font-family: 'Overpass', sans-serif;
+    color: #ffffff;
+    font-weight: normal;
+    margin-top: -8%;
+    font-size: 130%;
+    margin-left: 10%;
+    grid-column: 1 / 3;
+    grid-row: 2;
+}
+.botonCliente{
+    text-align: center;
+    width: 95%;
+    padding: 8px;
+    font-size: 130%;
+    margin-top: 20%;
+}
+#btClientIN{
+    grid-column: 1;
+    grid-row: 3;
+}
+#btClientOUT{ 
+    grid-column: 2;
+    grid-row: 3;
+}
+#btClientLEND{
+    grid-column: 1;
+    grid-row: 4;
+}
+#btClientBOOK{
+    grid-column: 2;
+    grid-row: 4;
+}
+#btClientPAY{
+    margin-left: 50%;
+    grid-column: 1 / 3;
+    grid-row: 5;
+}

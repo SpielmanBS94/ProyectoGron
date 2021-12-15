@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/guardarElemento.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <title>Guardar Elemento</title>
+</head>
+<body>
+    <h1> Agregar Nuevos Elementos</h1>
+    {% include 'agregarElemento/modalElementosInicio.html' %}
+    {% include 'agregarElemento/modalElementoEnviado.html' %}
+    <div class="recuadroNT" id="display">
+        <form action = "/guardarElemento" method="POST" id="form"> {% csrf_token %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <form method = "post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <table id="Formulario">
+                {{formElemento}}
+            </table>
+            <table id="BotonesTabla">
+                <tr><td>Tipo : {{Opcion}}</td></tr>
+                <tr> 
+                <td>
+                    <input type="hidden" name="opcion" value = {{Opcion}}>
+                    <input type="hidden" name="Momento" value = "Enviado">
+                    <input class = "boton btn-success" type="submit" id="guardar" value ="Guardar">
+                </td>
+        </form> 
+        <form action= "/home" method="GET">{% csrf_token %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <tr><td><input class = "boton btn-primary" type="button" data-toggle="modal" data-target="#elegirElementoInicial" value="Cambiar Tipo" id="CambiarTipo"></td></tr>
+        </form>
+                <form action= "/home" method="GET">{% csrf_token %}
+                    <input type="hidden" name="accion" value = "cancelElemento">
+                    <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                    <tr><td><input class = "boton btn-danger" type="submit" value="Cancelar" id="cancelar"></td></tr>
+                </form> 
+            </tr>  
+        </table>
+    </div>
+</body>
+</html>
+
+{% if Momento == 'Enviado'%}
+<script>
+    $(document).ready(function () {
+        $("#confirmarElemento").modal("show");
+    });
+</script>
+{%endif %}

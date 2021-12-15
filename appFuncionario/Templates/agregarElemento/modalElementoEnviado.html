@@ -1,0 +1,58 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Bootstrap -->
+<!-- Modal -->
+<div class="modal fade" id="confirmarElemento" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true" id="divMainMD"data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document" id="divDialogMD" data-backdrop="static" data-keyboard="false">
+      <div class="modal-content" id="contentMD">
+        <div class="modal-header" id="headerMD">
+          <p class="modal-title" id="tituloMD">¿Desea Confirmar el ingreso del elemento?</p>
+          <form action= "/home" method="GET">{% csrf_token %}
+            <input type="hidden" name="accion" value = "delServplusClient">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <button type="submit" class="close" id="cerrarMD">
+          </form>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>   
+        <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+        <div class="modal-body" id="bodyMD">
+            <table id="infoCliente">
+                        <tr>
+                          <td>ID     :</td> <td>{{Elemento.getId}}</td>
+                        </tr>
+                        <tr>
+                          <td>Nombre    :</td> <td>{{Elemento.getNombre}}</td>
+                        </tr>
+                        <tr>
+                          <td>Marca     :</td> <td>{{Elemento.getMarca}}</td>
+                        </tr>
+                      {% for atributo,valor in Elemento.getListAdicional %}
+                        <tr>
+                          <td>{{atributo}}     :</td> <td>{{valor}}</td>
+                        </tr>
+                      {% endfor %}
+              </table>
+        </div>
+        <div class="modal-footer" id="footerMD">
+            <form action= "/registro" method="POST">{% csrf_token %}
+              <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+              <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+              <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+              <input type="hidden" name="Momento" value = "confirmado">
+              <ul style="list-style-type:none;">
+              <li style="float:left;"><button type="sumbit" class="btn btn-success" id="ingresarMD">Registrar</button></li>
+            </form>
+            <form action= "/home" method="GET">{% csrf_token %}
+                <input type="hidden" name="accion" value = "delServplusClient">
+                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+                <li style="float:left;"><button type="submit" class="btn btn-danger" id="cancelMD">Cancelar</button></li>
+            </form>
+            </ul>
+        </div>
+      </div>
+    </div>
+</div>

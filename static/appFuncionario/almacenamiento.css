@@ -1,0 +1,80 @@
+#NombreFecha{
+    font-family: 'Overpass', sans-serif;
+    font-weight: normal;
+    color:#000000;
+    margin-left: 8%;
+    font-size: 200%;
+    width: 90%;
+}
+
+#cuadrosIN {
+    display:grid;
+    margin-left: 3%;
+    grid-template-columns: [cuadro1H]28% [cuadro2H]70%[end];
+    grid-template-rows: [cuadro1V]58% [cuadro2V] 30%[end];
+}
+
+#busquedaIN {
+    margin-left: 15%;
+    grid-column: 2;
+    grid-row: 1;
+    width: 80%;
+    height: 40%;
+}
+#ElementosIN {
+    display: grid;
+    grid-template-columns: repeat(2,50%[botones]);
+    grid-template-rows: [cuadro1V]80% [cuadro2V] 20%[end];
+    margin-left: 15%;
+    grid-column: 2;
+    grid-row: 2;
+    width: 80%;
+    margin-top: -32%;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+display: block;
+}
+
+#tablaElementos{
+    grid-column: 1 / 3;
+    grid-row: 1;
+    font-family: 'Overpass', sans-serif;
+    font-weight: normal;
+    color:#ffffff;
+    margin-top: 2%;
+    margin-left: 5%;
+    width: 90%;
+    background-color: #000000;
+    border-radius: 10px;
+}
+
+
+#EnviarAlmc{
+    grid-column: 1;
+    grid-row: 2;
+    border-radius: 10px;
+    width: 50%;
+    height: 80%;
+    font-size: 200%;
+    margin-left: 40%;
+}
+#CancelAlmc{
+    grid-column: 2;
+    grid-row: 2;
+    border-radius: 10px;
+    width: 50%;
+    height: 80%;
+    font-size: 200%;
+    margin-left: 15%;
+}
+
+.boton {
+    background: #000000;
+}

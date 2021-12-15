@@ -1,0 +1,53 @@
+{% load static %}
+<link rel="stylesheet"  href="{% static 'appFuncionario/estiloClienteInfo.css' %}">
+<div class = "recuadroNT" id="cliente">
+    <img class="fotoPerfil" src= {{ MEDIA_URL }}{{Cliente.getImg}} id="fotoPerfClient">
+    <table id="infoCliente">
+        <tr>
+            <td>Cliente</td>
+            <td>: {{Cliente.getRutFormato}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{% for palabra in Cliente.getNombres %}
+                    &nbsp;&nbsp;{{palabra}}
+                {% endfor %}
+                <br>
+                {% for palabra in Cliente.getApellidos %}
+                    &nbsp;&nbsp;{{palabra}}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>Deuda</td>
+            <td>: ${{Cliente.getDeuda}} CLP</td>
+        </tr>
+        <tr>
+            <td>Correo</td>
+            <td>: {{Cliente.getCorreo}}</td>
+        </tr>
+        <tr>
+            <td>Telefono</td>
+            <td>: {{Cliente.getTelefono}}</td>
+        </tr>
+        <tr>
+            <td>Tarjeta N°</td>
+            <td>: {{Cliente.getTarjeta}}</td>
+        </tr>
+    </table>
+    <form action ="/registro" method="GET">{% csrf_token %}
+        <input class = "botonCliente" type="button" value="Almacenar"id="btClientIN" >
+    </form>
+    <form action ="/registro" method="GET">{% csrf_token %}
+        <input class = "botonCliente" type="button" value="Retirar"id="btClientOUT" >
+    </form>
+    <form action ="/registro" method="GET">{% csrf_token %}
+        <input class = "botonCliente" type="button" value="Solicitar"id="btClientLEND" >
+    </form>
+    <form action ="/registro" method="GET">{% csrf_token %}
+        <input class = "botonCliente" type="button" value="Reservar"id="btClientBOOK" >
+    </form>
+    <form action ="/registro" method="GET">{% csrf_token %}
+        <input class = "botonCliente" type="button" value="Pagar"id="btClientPAY" >
+    </form>
+</div>

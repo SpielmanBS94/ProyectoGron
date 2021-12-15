@@ -1,0 +1,57 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Bootstrap -->
+<!-- Modal -->
+<div class="modal fade" id="confirmarCliente" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true" id="divMainMD"data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document" id="divDialogMD" data-backdrop="static" data-keyboard="false">
+      <div class="modal-content" id="contentMD">
+        <div class="modal-header" id="headerMD">
+          <p class="modal-title" id="tituloMD">¿Desea Confirmar el Registro de este Cliente?</p>
+          <form action= "/home" method="GET">{% csrf_token %}
+            <input type="hidden" name="accion" value = "delServplusClient">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <button type="submit" class="close" id="cerrarMD">
+          </form>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>   
+        <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+        <div class="modal-body" id="bodyMD">
+            <table id="infoCliente">
+                <tr>
+                    <img class="fotoPerfil" src= {{ MEDIA_URL }}{{Cliente.getImg}} id="fotoPerfClient">
+                    <td>Rut      : {{Cliente.getRutFormato}}</td>
+                </tr>
+                <tr>
+                  <td>Nombre   : {{Cliente.getNombre}}</td>
+                </tr>
+                <tr>
+                  <td>Correo   : {{Cliente.getCorreo}}</td>
+                </tr>
+                <tr>
+                  <td>Telefono : {{Cliente.getTelefono}}</td>
+                </tr>
+              </table>
+        </div>
+        <div class="modal-footer" id="footerMD">
+            <form action= "/registro" method="POST">{% csrf_token %}
+              <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+              <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+              <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+              <input type="hidden" name="Momento" value = "confirmado">
+              <ul style="list-style-type:none;">
+              <li style="float:left;"><button type="sumbit" class="btn btn-success" id="ingresarMD">Registrar</button></li>
+            </form>
+            <form action= "/home" method="GET">{% csrf_token %}
+                <input type="hidden" name="accion" value = "delServplusClient">
+                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+                <li style="float:left;"><button type="submit" class="btn btn-danger" id="cancelMD">Cancelar</button></li>
+            </form>
+            </ul>
+        </div>
+      </div>
+    </div>
+</div>

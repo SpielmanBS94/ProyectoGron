@@ -3,49 +3,51 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
+    {% include 'crearUsuario/modalConfirmarCliente.html' %}
+    {% include 'crearUsuario/modalTarjeta.html' %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/crearUsuario.css' %}">
     <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
-    
     <title>Registro Clientes</title>
 </head>
 <body>
-    <div class ="tabla">
-        <form action = "/confirmarRegistro" method="GET"> {% csrf_token %}
+    <div class ="tabla" id="Formulario">
+        <form action = "/registro" method="POST" enctype='multipart/form-data'> {% csrf_token %}
             <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
             <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
             <h1> Pagina de registro Clientes</h1>
+            <form method = "post" enctype="multipart/form-data">
+                {% csrf_token %}
             <table>
-                <tbody>
-                    <tr>
-                        <td> Rut</td>
-                        <td><input class= "ingreso" type="text" placeholder="Ingrese Rut" name="rut" required></td>
-                    </tr>
-                    <tr>
-                        <td> Correo</td>
-                        <td> <input class= "ingreso" type="Email" placeholder="Ingrese correo" name="correo" required> </td>
-                    </tr>
-                    <tr>
-                        <td> Nombre</td>
-                        <td><input class= "ingreso" type="text" placeholder="Ingrese Nombre" name="nombre" required></td>
-                    </tr>
-                    <tr>
-                        <td> Telefono</td>
-                        <td><input class= "ingreso" type="text" placeholder="Ingrese Telefono" name="telefono"></td>
-                    </tr>
-                    <tr>
-                        <td><input class = "boton" type="submit" value="Registrar"></form></td>
-                        <td>
-                            <form action= "/home" method="GET">{% csrf_token %}
-                                <input type="hidden" name="accion" value = "delServ">
-                                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
-                                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-                                <input class = "boton" type="submit" value="Cancelar">
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                {{FormCliente}}
+                <tr>
+                    <td>
+                        <input type="hidden" name="Momento" value = "enviado">
+                        <input class = "boton btn-success" type="submit" id="registrar" value ="Registrar">
+                    </td>
+            </form>
+                    <form action= "/home" method="GET">{% csrf_token %}
+                        <input type="hidden" name="accion" value = "delServ">
+                        <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                        <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                        <td><input class = "boton btn-danger" type="submit" value="Cancelar" id="cancelRegistro"></td>
+                    </form> 
+                </tr>  
+            </table>   
     </div> 
 </body>
 </html>
+{% if Momento == 'enviado'%}
+<script>
+    $(document).ready(function () {
+        $("#confirmarCliente").modal("show");
+    });
+</script>
+{% elif Momento == 'confirmado'%}
+    <script>
+        $(document).ready(function () {
+            $("#imprimirTarjeta").modal("show");
+        });
+    </script>
+{%endif %}

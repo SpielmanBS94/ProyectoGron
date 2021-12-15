@@ -1,0 +1,51 @@
+.boton {
+  font-family: 'Overpass', sans-serif;
+  font-size: 110%;
+  color:#ffffff;
+  height: 50px;
+  width: 150px;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+}
+table, th, td {
+  border: 0px;
+  padding:12px;
+  font-size: 20px;
+}
+
+#id_nombre,#id_marca,#id_color,#id_observaciones,
+#id_accesorios,#id_activoFijo,#id_estado,#id_numero_estacionamiento,#id_area,#id_talla{
+width: 200%;
+color: #000000
+}
+
+
+#display{
+  width: 90%;
+  margin-top: 3%;
+  margin-left: 5%
+}
+
+#Formulario{
+  width: 50%;
+  grid-column: 1;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+#BotonesTabla{
+  margin-top: 5%;
+  grid-column: 2;
+}
+#form{
+  display: grid;
+  grid-template-columns: [cuadro1H]70% [cuadro2H]30%[end];
+  padding-bottom: 50px;
+  color: #ffffff;
+}
+
+#headerMD,#bodyMD{
+  text-align: center;
+  font-size:150%;
+  color: #ffffff;
+}

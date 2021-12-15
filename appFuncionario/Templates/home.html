@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
-    {% include 'super/modalIngresarRut.html' %}  
+    {% include 'super/modalIngresarRut.html' %}
+    {% include 'super/modalBadRut.html' %}
+    {% include 'agregarElemento/modalElementosInicio.html' %}
     <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
     <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
@@ -38,15 +40,17 @@
     <div class = "recuadroNT" id="opciones">
         <p id="lbOpciones">Servicios Funcionario</p>
         <form action ="/registro" method="POST">{% csrf_token %}
-        <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-        <input class = "botonOpcion" type="submit" value="" id="btCrearUsuario">
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="Momento" value = "inicio">
+            <input class = "botonOpcion" type="submit" value="" id="btCrearUsuario">
         </form> 
         <form action ="/registro" method="GET">{% csrf_token %}
             <input class = "botonOpcion" type="button" value=""id="btActualizar" >
         </form>
-        <form action ="/registro" method="GET">{% csrf_token %}
-            <input class = "botonOpcion" type="button" value=""id="btIngresar">
-        </form>
+        <form action ="/guardarElemento" method="GET">{% csrf_token %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#elegirElementoInicial" id="btIngresar"></button>
+        </form> 
         <form action ="/registro" method="GET">{% csrf_token %}
             <input class = "botonOpcion" type="button" value=""id="btIncidente">
         </form>
@@ -56,3 +60,10 @@
     </div>
 </body>
 </html>
+{% if Momento == 'badRut'%}
+<script>
+    $(document).ready(function () {
+        $("#badRut").modal("show");
+    });
+</script>
+{%endif %}

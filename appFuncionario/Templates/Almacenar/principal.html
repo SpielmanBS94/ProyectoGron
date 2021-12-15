@@ -1,1 +1,36 @@
-<h1>{{Funcionario}}</br>{{Cliente}}</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/almacenamiento.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <title>Almacenar</title>
+</head>
+<body>
+    <table id="NombreFecha">
+        <tr>
+            <td>Servicio de Almacenamiento </td>
+            <td >N°{{Servicio.getNum}}</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Fecha}}</td>
+        </tr>
+    </table>
+    <div id="cuadrosIN">
+        {% include 'super/cliente.html' %}
+        <div class = "recuadroNT" id="busquedaIN">
+            {% include 'almacenar/busquedaElementos.html' %}
+        </div>
+        <div class = "recuadroNT" id="ElementosIN">
+            {% include 'almacenar/listaElementos.html' %}
+            <button type="button" class="btn btn-success" id="EnviarAlmc">Enviar</button>
+            <form action= "/home" method="GET">{% csrf_token %}
+                <input type="hidden" name="accion" value = "delServ">
+                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="CancelAlmc">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

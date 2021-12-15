@@ -1,0 +1,39 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Bootstrap -->
+<!-- Modal -->
+{% load static %}
+{% load qr_code %}
+<div class="modal fade" id="imprimirTarjeta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="divMainMD"data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document" id="divDialogMD" data-backdrop="static" data-keyboard="false">
+      <div class="modal-content" id="contentMD">
+        <div class="modal-header" id="headerMD">
+          <p class="modal-title" id="tituloMD">Entrege Tarjeta a cliente</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cerrarMD">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="bodyMD">
+          <div class="container">
+              <img src="{% static 'appFuncionario/imagenes/tarjeta.png' %}">
+              <div class="qr">
+                  {% qr_from_text Cliente.getRut size=16 version=1%}
+              </div>
+              <div class="info">
+                  <h3>N°{{Numero}}</h3>
+                      {% for palabra in Cliente.getInfoTarj %}
+                          {{palabra}}</br>
+                      {% endfor %}
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" id="footerMD">
+          <form action= "/home" method="GET"> {% csrf_token %}
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                <input type="hidden" name="accion" value = "tarjetaImpresa">
+                <input class = "boton" type="submit" value="Imprimir" id="btnImprimir">
+        </form>
+        </div>
+      </div>
+    </div>
+</div>

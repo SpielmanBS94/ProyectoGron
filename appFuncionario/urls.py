@@ -9,7 +9,6 @@ urlpatterns = [
     path('badlogin',badlogin),
     path('home',home),
     path('registro',registro),
-    path('confirmarRegistro',confirmarRegistro),
-    path('confirmado',confirmado),
-    path('almacenar',almacenar)
+    path('almacenar',almacenar),
+    path('guardarElemento',guardar)
 ]
