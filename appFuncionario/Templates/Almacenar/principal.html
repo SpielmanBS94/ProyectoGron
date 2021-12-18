@@ -6,6 +6,7 @@
     <link rel="stylesheet"  href="{% static 'appFuncionario/almacenamiento.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
     <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
     <title>Almacenar</title>
 </head>
 <body>
@@ -34,3 +35,11 @@
     </div>
 </body>
 </html>
+
+{% if Momento == 'Busqueda'%}
+<script>
+    $(document).ready(function () {
+        $("#busqueda").modal("show");
+    });
+</script>
+{%endif %}

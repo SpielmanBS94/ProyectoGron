@@ -8,38 +8,20 @@
         <tr>
           <th colspan="4" scope="col">Elementos a Almacenar</th>
         </tr>
+        <tr>
+          <th>Id Detalle</th>
+          <th>Tipo Elemento</th>
+          <th>Id Elemento</th>
+        </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
+        {% for elemento in ListaAgregados %}
+          <tr>
+            <td>{{elemento.getId}}</td>
+            <td>{{elemento.getTipo}}</td>
+            <td>{{elemento.getId}}</td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>

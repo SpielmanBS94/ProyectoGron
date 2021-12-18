@@ -11,9 +11,11 @@
     <title>Guardar Elemento</title>
 </head>
 <body>
-    <h1> Agregar Nuevos Elementos</h1>
+    <h1 id = "Titulo"> Agregar Nuevos Elementos</h1>
+    <h1 id = "Fecha"> Fecha :{{Fecha}}</h1>
     {% include 'agregarElemento/modalElementosInicio.html' %}
     {% include 'agregarElemento/modalElementoEnviado.html' %}
+    {% include 'agregarElemento/modalElementoRegistrado.html' %}
     <div class="recuadroNT" id="display">
         <form action = "/guardarElemento" method="POST" id="form"> {% csrf_token %}
             <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
@@ -50,6 +52,18 @@
 <script>
     $(document).ready(function () {
         $("#confirmarElemento").modal("show");
+    });
+</script>
+{% elif Momento == 'Registrado'%}
+<script>
+    $(document).ready(function () {
+        $("#elementoRegistrado").modal("show");
+    });
+</script>
+{% elif Momento == 'Cancelado'%}
+<script>
+    $(document).ready(function () {
+        $("#cancelarElemento").modal("show");
     });
 </script>
 {%endif %}

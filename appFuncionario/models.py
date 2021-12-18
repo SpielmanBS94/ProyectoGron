@@ -198,15 +198,17 @@ class Elemento(models.Model):
         return self.marca
 
 class EPP(Elemento):
-    talla=models.CharField(max_length=3, null=True, blank=True,default="sin Talla")
+    talla=models.CharField(max_length=10, null=True, blank=True,default="sin Talla")
     desechable=models.BooleanField()
-    color=models.CharField(max_length=10, null=True, blank=True,default="No especificado")
+    color=models.CharField(max_length=30, null=True, blank=True,default="No Especificado")
 
     def getListAdicional(self):
         return [("Talla",self.talla),("Desechable",self.desechable),("Color",self.color)]
     def getInfoAdicional(self,posicion):
         infos=[self.talla,self.desechable,self.marca]
         return infos[posicion]
+    def getTipo(self):
+        return "EPP"
 
 
 class Herramienta(Elemento):
@@ -221,6 +223,8 @@ class Herramienta(Elemento):
     def getInfoAdicional(self,posicion):
         infos=[self.instrucciones,self.desechable,self.requiere_epp,self.lista_epp,self.estado]
         return infos[posicion]
+    def getTipo(self):
+        return "Herramienta"
 
 class Bicicleta(Elemento):
     color=models.CharField(max_length=10)
@@ -234,10 +238,12 @@ class Bicicleta(Elemento):
     def getInfoAdicional(self,posicion):
         infos=[self.color,self.observaciones,self.accesorios,self.activoFijo,self.estado]
         return infos[posicion]
+    def getTipo(self):
+        return "Bicicleta"
 
 class Estacionamiento(Elemento):
     numero_estacionamiento=models.CharField(max_length=10)
-    area=models.CharField(max_length=3, null=True, blank=True,default="No especificado")
+    area=models.CharField(max_length=3, null=True, blank=True,default="")
     disponibilidad=models.BooleanField()
 
     def getListAdicional(self):
@@ -245,3 +251,5 @@ class Estacionamiento(Elemento):
     def getInfoAdicional(self,posicion):
         infos=[self.numero_estacionamiento,self.area,self.disponibilidad]
         return infos[posicion]
+    def getTipo(self):
+        return "Estacionamiento"

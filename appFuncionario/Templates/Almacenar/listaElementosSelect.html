@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Bootstrap -->
+
+<div class="table-wrapper-scroll-y my-custom-scrollbar" id="tablaElementos">
+    <table class="table table-dark">
+      <thead id="cabezeraEle">
+        <tr>
+          <th>Id</th>
+          <th>Tipo</th>
+          <th>Añadir</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for elemento in ListaBuscados %}
+          <tr>
+            <td>{{elemento.getId}}</td>
+            <td>{{elemento.getTipo}}</td>
+            <td><input type="checkbox" value="{{elemento.getTipo}}:{{elemento.getId}}"></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

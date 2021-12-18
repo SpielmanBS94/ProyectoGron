@@ -14,7 +14,7 @@ table, th, td {
   font-size: 20px;
 }
 
-#id_nombre,#id_marca,#id_color,#id_observaciones,
+#id_nombre,#id_marca,#id_color,#id_observaciones,#id_instrucciones,#id_lista_epp,
 #id_accesorios,#id_activoFijo,#id_estado,#id_numero_estacionamiento,#id_area,#id_talla{
 width: 200%;
 color: #000000
@@ -44,8 +44,44 @@ color: #000000
   color: #ffffff;
 }
 
-#headerMD,#bodyMD{
+#headerMD,#bodyMD,#bodyMDConf{
   text-align: center;
   font-size:150%;
   color: #ffffff;
+}
+#bodyMDConf {
+  margin-left: 20%;
+  text-align: left;
+}
+#Titulo {
+  margin-top: 2%;
+  margin-left: 7%;
+}
+#Fecha {
+  margin-top: -4%;
+  margin-left: 55%;
+}
+#ingresarMD{
+  margin-left: 120%;
+  font-size: 120%;
+}
+#cancelMD {
+  margin-left: 260%;
+  font-size: 120%;
+}
+#footerMD{
+  text-align: center;
+  background-color: rgb(0, 0, 0);
+}
+#btnContinuar {
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  font-size: 150%;
+  margin-left: 100%;
+}
+#cerrarMDHome{
+  background-color: #d43f3a;
+  border-color: #d43f3a;
+  margin-left: 320%;
+  font-size: 150%;
 }

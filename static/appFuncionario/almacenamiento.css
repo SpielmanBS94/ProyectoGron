@@ -53,6 +53,7 @@ display: block;
     width: 90%;
     background-color: #000000;
     border-radius: 10px;
+    text-align: left;
 }
 
 
@@ -77,4 +78,32 @@ display: block;
 
 .boton {
     background: #000000;
+}
+#botonBusqueda,#botonClienteFrec,#botonNuevoEle{
+    font-size: 22px;
+    padding: 5px;
+}
+#tablaBusqueda {
+    font-family: 'Overpass', sans-serif;
+    font-weight: normal;
+    font-size: 25px;
+    color:#ffffff;
+    margin-left: 5%;
+    margin-top: 3%;
+    text-align: left;
+}
+#campoBusqueda{
+    width: 150%;
+    margin-left: -60%;
+    color:#000000;
+}
+#botonBusqueda {
+    margin-left: -55%;
+    padding: 5px;
+}
+#botonNuevoEle{
+    margin-left: 25%;
+}
+#tituloMD{
+    color: #ffffff;
 }

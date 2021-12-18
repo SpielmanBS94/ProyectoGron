@@ -17,39 +17,39 @@
           </button>
         </div>   
         <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-        <div class="modal-body" id="bodyMD">
+        <div class="modal-body" id="bodyMDConf">
             <table id="infoCliente">
                         <tr>
-                          <td>ID     :</td> <td>{{Elemento.getId}}</td>
+                          <td>ID</td> <td>: {{Elemento.getId}}</td>
                         </tr>
                         <tr>
-                          <td>Nombre    :</td> <td>{{Elemento.getNombre}}</td>
+                          <td>Nombre</td> <td>: {{Elemento.getNombre}}</td>
                         </tr>
                         <tr>
-                          <td>Marca     :</td> <td>{{Elemento.getMarca}}</td>
+                          <td>Marca</td> <td>: {{Elemento.getMarca}}</td>
                         </tr>
                       {% for atributo,valor in Elemento.getListAdicional %}
                         <tr>
-                          <td>{{atributo}}     :</td> <td>{{valor}}</td>
+                          <td>{{atributo}}</td> <td>: {{valor}}</td>
                         </tr>
                       {% endfor %}
               </table>
         </div>
         <div class="modal-footer" id="footerMD">
-            <form action= "/registro" method="POST">{% csrf_token %}
-              <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
-              <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-              <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
-              <input type="hidden" name="Momento" value = "confirmado">
+            <form action= "/guardarElemento" method="POST">{% csrf_token %}
               <ul style="list-style-type:none;">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <input type="hidden" name="Momento" value = "Registrado">
+                <input type="hidden" name="opcion" value = {{Opcion}}>
+                <input type="hidden" name="Elemento" value = "{{Elemento.getId}}">
               <li style="float:left;"><button type="sumbit" class="btn btn-success" id="ingresarMD">Registrar</button></li>
             </form>
-            <form action= "/home" method="GET">{% csrf_token %}
-                <input type="hidden" name="accion" value = "delServplusClient">
-                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
-                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-                <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
-                <li style="float:left;"><button type="submit" class="btn btn-danger" id="cancelMD">Cancelar</button></li>
+            <form action= "/guardarElemento" method="GET">{% csrf_token %}
+              <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+              <input type="hidden" name="Momento" value = "Cancelado">
+              <input type="hidden" name="radio" value = {{Opcion}}>
+              <input type="hidden" name="Elemento" value = "{{Elemento.getId}}">
+                <li style="float:left; margin-left:-15%"><button type="submit" class="btn btn-danger" id="cancelMD">Cancelar</button></li>
             </form>
             </ul>
         </div>

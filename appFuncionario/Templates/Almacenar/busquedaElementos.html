@@ -1,20 +1,31 @@
+{% include 'Almacenar/modalBusquedaCriterio.html' %}
 <table id="tablaBusqueda">
     <tr colspan="2">
         <td>Busqueda</td>
-        <td>CuadroBusqueda+Boton</td>
+        <td>
+            <form action= "/almacenar" method="POST">{% csrf_token %}   
+            <input type="text"id="campoBusqueda" placeholder="Ingrese Criterio de Busqueda" name="criterio" required>
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <input type="hidden" name="ListaAgregados" value = "{{ListaAgregados}}">
+            <input type="hidden" name="accion" value = "Buscar">
+        </td>
+        <td>
+            <button class = "boton" type="submit" id="botonBusqueda">Buscar</button>
+        </td>
+            </form>
     </tr>
     <tr>
-        <td>Bicicleta+RB</td>
-        <td></td>
-        <td>EPP+RB</td>
+        <td><input type="radio"name="radio" value ="Bicicleta">Bicicleta</td>
+        <td><input type="radio"name="radio" value ="EPP">EPP</td>
     </tr>
     <tr>
-        <td>Herramienta+RB</td>
-        <td></td>
-        <td>EPP+RB</td>
+        <td><input type="radio"name="radio" value ="Herramienta">Herramienta</td>
+        <td><input type="radio"name="radio" value ="Estacionamiento">Estacionamiento</td>
     </tr>
     <tr>
-        <td>Boton1</td>
-        <td>Boton2</td>
+        <td><input class="boton" type="button" value ="Elementos Frecuentes Cliente"id="botonClienteFrec"></td>
+        <td><input class="boton" type="button" value ="Añadir Nuevo Elemento"id="botonNuevoEle"></td>
     </tr>
 </table>

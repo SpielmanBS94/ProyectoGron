@@ -3,6 +3,7 @@
     grid-template-columns: [primera]50% [segunda]50%[end];
     grid-template-rows: [primera]30% [segunda]30% repeat(3,10% [botones])[end];
     width: 100%;
+    height: 530px;;
     margin-left: 20%;
     border-radius: 20px;
     padding: 20px;
@@ -21,35 +22,31 @@
     font-weight: normal;
     margin-top: -8%;
     font-size: 130%;
-    margin-left: 10%;
     grid-column: 1 / 3;
     grid-row: 2;
+    border-collapse: separate;
+    border-spacing: 20px 2px;
 }
 .botonCliente{
-    text-align: center;
-    width: 95%;
+    width: 120px;
     padding: 8px;
-    font-size: 130%;
-    margin-top: 20%;
+    font-size: 100%;
+    background: #000000;
+    border:0;
+    border-radius: 10px;
+    color: #ffffff;
 }
 #btClientIN{
     grid-column: 1;
-    grid-row: 3;
-}
-#btClientOUT{ 
-    grid-column: 2;
     grid-row: 3;
 }
 #btClientLEND{
     grid-column: 1;
     grid-row: 4;
 }
-#btClientBOOK{
-    grid-column: 2;
-    grid-row: 4;
-}
 #btClientPAY{
-    margin-left: 50%;
+    margin-left: 20%;
+    width: 50%;
     grid-column: 1 / 3;
     grid-row: 5;
 }

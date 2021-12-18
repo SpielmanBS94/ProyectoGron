@@ -34,20 +34,35 @@
             <td>Tarjeta N°</td>
             <td>: {{Cliente.getTarjeta}}</td>
         </tr>
+        <tr>
+            <td>
+                <form action ="/registro" method="GET">{% csrf_token %}
+                    <input class = "botonCliente" type="button" value="Almacenar"id="btClientIN" >
+                </form>
+            </td>
+            <td>
+                <form action ="/registro" method="GET">{% csrf_token %}
+                    <input class = "botonCliente" type="button" value="Retirar"id="btClientOUT" >
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form action ="/registro" method="GET">{% csrf_token %}
+                    <input class = "botonCliente" type="button" value="Solicitar"id="btClientLEND" >
+                </form>
+            </td>
+            <td>
+                <form action ="/registro" method="GET">{% csrf_token %}
+                    <input class = "botonCliente" type="button" value="Reservar"id="btClientBOOK" >
+                </form>
+            </td>
+        </tr>
+        <tr><td colspan="2">
+            <form action ="/registro" method="GET">{% csrf_token %}
+                <input class = "botonCliente" type="button" value="Pagar"id="btClientPAY" >
+            </form>
+        </td>
+        </tr>
     </table>
-    <form action ="/registro" method="GET">{% csrf_token %}
-        <input class = "botonCliente" type="button" value="Almacenar"id="btClientIN" >
-    </form>
-    <form action ="/registro" method="GET">{% csrf_token %}
-        <input class = "botonCliente" type="button" value="Retirar"id="btClientOUT" >
-    </form>
-    <form action ="/registro" method="GET">{% csrf_token %}
-        <input class = "botonCliente" type="button" value="Solicitar"id="btClientLEND" >
-    </form>
-    <form action ="/registro" method="GET">{% csrf_token %}
-        <input class = "botonCliente" type="button" value="Reservar"id="btClientBOOK" >
-    </form>
-    <form action ="/registro" method="GET">{% csrf_token %}
-        <input class = "botonCliente" type="button" value="Pagar"id="btClientPAY" >
-    </form>
 </div>
