@@ -79,11 +79,21 @@ class Funcionario(models.Model):
         elif(tipo == "almacenamiento"):
             servicio=Servicio.objects.create(Funcionario=self,tipo=tipo,Cliente=cliente)
             return servicio
-    def confirmarServicio(self,tipo,servicio):
+    def confirmarServicio(self,tipo,servicioConfirm):
         if(tipo=="registro"):
-            servicio.fecha_reserva_servicio=datetime.now()
-            servicio.fecha_inicio_servicio=datetime.now()
-            servicio.save()
+            servicioConfirm.fecha_reserva_servicio=datetime.now()
+            servicioConfirm.fecha_inicio_servicio=datetime.now()
+            servicioConfirm.save()
+        elif(tipo== "almacenamiento"):
+            servicioConfirm.fecha_reserva_servicio=datetime.now()
+            servicioConfirm.fecha_inicio_servicio=datetime.now()
+            servicioConfirm.save()
+        listaElementos = list()
+        queryset=Detalle.objects.filter(servicio=servicioConfirm)
+        for detalle in queryset:
+            detalle.fecha_hora_entrega=datetime.now()
+            detalle.fecha_hora_entrega_real=datetime.now()
+            detalle.save()
         return True
     def servicioListo(self,servicio):
         servicio.fecha_termino_servicio=datetime.now()
@@ -136,6 +146,7 @@ class Tarjeta(models.Model):
     def getNum(self):
         return self.numero_tarjeta
 
+
 class Servicio(models.Model):
 
     num_servicio = models.BigAutoField(primary_key = True)
@@ -170,9 +181,23 @@ class Servicio(models.Model):
 
     def getClient(self):
         return self.Cliente
+
     def setTerminoServicio(self):
         self.fecha_termino_servicio=datetime.now()
         self.save()
+
+    def crearDetalle(self,idElemento,tipo):
+        det = None
+        if(tipo == "Bicicleta"):
+            det,creado = Detalle.objects.get_or_create(servicio=self,bici=Bicicleta.objects.get(id=idElemento))
+        elif(tipo == "EPP"):
+            det,creado  = Detalle.objects.get_or_create(servicio=self,epp=EPP.objects.get(id=idElemento))
+        elif(tipo == "Estacionamiento"):
+            det,creado  = Detalle.objects.get_or_create(servicio=self,est=Estacionamiento.objects.get(id=idElemento))
+        elif(tipo == "Herramienta"):
+            det,creado  = Detalle.objects.get_or_create(servicio=self,herr=Herramienta.objects.get(id=idElemento))
+        return det.getId()
+
 
 class Elemento(models.Model):
 
@@ -253,3 +278,17 @@ class Estacionamiento(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "Estacionamiento"
+
+class Detalle(models.Model):
+    id_detalle = models.BigAutoField(primary_key = True)
+    fecha_hora_entrega = models.DateTimeField(null=True)
+    fecha_hora_entrega_real = models.DateTimeField(null=True)
+    id_bici = models.ForeignKey(Bicicleta, name = "bici",on_delete = SET_NULL, default="",null=True)
+    id_epp = models.ForeignKey(EPP, name = "epp",on_delete = SET_NULL, default="",null=True)
+    id_est = models.ForeignKey(Estacionamiento, name = "est",on_delete = SET_NULL, default="",null=True)
+    id_herr = models.ForeignKey(Herramienta, name = "herr",on_delete = SET_NULL, default="",null=True)
+
+    num_servicio = models.ForeignKey(Servicio, name = "servicio",on_delete = CASCADE,default="",null=True)
+
+    def getId(self):
+        return self.id_detalle

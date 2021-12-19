@@ -12,20 +12,37 @@ def obtenerFecha():
     locale.setlocale(locale.LC_ALL, 'es-ES')
     return datetime.now().strftime("%A , %d-%m-%Y").capitalize()
 
-def obtenerElementos(criterio):
+def obtenerElementos(criterio,filtro):
     listaElementos = list()
-    queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)| Q(activoFijo=False))
-    for elemento in queryset:
-        listaElementos.append(elemento)
-    queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True))
-    for elemento in queryset2:
-        listaElementos.append(elemento)
-    queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio))
-    for elemento in queryset3:
-        listaElementos.append(elemento)
-    queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio))
-    for elemento in queryset4:
-        listaElementos.append(elemento)
+    if(filtro == "Bicicleta"):
+        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False))
+        for elemento in queryset:
+            listaElementos.append(elemento)
+    elif(filtro == "EPP"):
+        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio))
+        for elemento in queryset4:
+            listaElementos.append(elemento)
+    elif(filtro == "Estacionamiento"):
+        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True))
+        for elemento in queryset2:
+            listaElementos.append(elemento)
+    elif(filtro == "Herramienta"):
+        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio))
+        for elemento in queryset3:
+            listaElementos.append(elemento)
+    else:
+        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False))
+        for elemento in queryset:
+            listaElementos.append(elemento)
+        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True))
+        for elemento in queryset2:
+            listaElementos.append(elemento)
+        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio))
+        for elemento in queryset3:
+            listaElementos.append(elemento)
+        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio))
+        for elemento in queryset4:
+            listaElementos.append(elemento)
     return listaElementos
 
 def login(request):
@@ -68,6 +85,12 @@ def home(request):
             fecha =obtenerFecha()
             func = Funcionario.objects.get(rut=request.GET["func"])
             return render(request,'home.html',{"Funcionario":func,"Fecha":fecha})
+        elif(request.GET["accion"]=="ConfServAlm"):
+            fecha =obtenerFecha()
+            func = Funcionario.objects.get(rut=request.GET["func"])
+            serv = Servicio.objects.get(num_servicio=request.GET["serv"])
+            confirmado =func.confirmarServicio("almacenamiento",serv)
+            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"ServicioConfirm"})
 
 def registro(request):
     func = Funcionario.objects.get(rut=request.POST["func"])
@@ -109,6 +132,8 @@ def almacenar(request):
         fecha =obtenerFecha()
         lista = request.POST["ListaAgregados"].replace("[","").replace("]","").split(",")
         listaElementosAgregados = list()
+        listaDetalles = list()
+        listaTuplas = list()
         for elemento in lista:
             tipo = elemento[elemento.find("<")+1:elemento.find(":")]
             idEle = elemento[elemento.find("(")+1:elemento.find(")")]
@@ -122,10 +147,21 @@ def almacenar(request):
             elif(tipo == "Herramienta"):
                 ele = Herramienta.objects.get(id=idEle)
             if(ele != None):
+                detalle = serv.crearDetalle(idEle,tipo)
+                listaDetalles.append(detalle)
                 listaElementosAgregados.append(ele)
         if(request.POST["accion"] == "Buscar"):
-            listaElementosBuscados = obtenerElementos(request.POST["criterio"])
-            return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados , "ListaBuscados":listaElementosBuscados, "Momento":"Busqueda"})
+            try:
+                listaElementosBuscados = obtenerElementos(request.POST["criterio"],request.POST["radio"])
+            except:
+                listaElementosBuscados = obtenerElementos(request.POST["criterio"],"todo")
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas,"ListaBuscados":listaElementosBuscados,"ListaAgregados":listaElementosAgregados, "Momento":"Busqueda"})
+        if(request.POST["accion"] == "Confirmar"):
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas,"ListaAgregados":listaElementosAgregados, "Momento":"Confirmar"})
         elif(request.POST["accion"] == "Agregar"):
             listaSelect = request.POST["seleccion"].split(",")
             for elemento in listaSelect:
@@ -141,8 +177,12 @@ def almacenar(request):
                 elif(tipo == "Herramienta"):
                     ele = Herramienta.objects.get(id=idEle)
                 if(ele != None):
+                    detalle = serv.crearDetalle(idEle,tipo)
+                    listaDetalles.append(detalle)
                     listaElementosAgregados.append(ele)
-            return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados ,"Momento":"Agregados"})
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas ,"ListaAgregados":listaElementosAgregados,"Momento":"Agregados"})
 
 def guardar(request):
     fecha = obtenerFecha()

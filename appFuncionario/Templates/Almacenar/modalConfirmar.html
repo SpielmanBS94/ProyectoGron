@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><!-- jQuery -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Bootstrap -->
+<!-- Modal -->
+<div class="modal fade" id="confirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="divMainMD">
+    <div class="modal-dialog" role="document" id="divDialogMD">
+      <div class="modal-content" id="contentMD">
+        <div class="modal-header" id="headerMD">
+          <p class="modal-title" id="tituloMD">Confirmar Servicio</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cerrarMD">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action= "/home" method="GET">{% csrf_token %}    
+        <div class="modal-body" id="bodyMD">
+            <p id="textoConf">¿Desea confirmar e Iniciar servicio de Almacenamiento : {{Servicio.getNum}}?</p>
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="accion" value = "ConfServAlm">
+        </div>
+        <div class="modal-footer" id="footerMD">
+          <button type="sumbit" class="btn btn-success" id="agregarElementos">Confirmar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelMD">Volver</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+</script>

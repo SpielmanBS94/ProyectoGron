@@ -24,7 +24,15 @@
         </div>
         <div class = "recuadroNT" id="ElementosIN">
             {% include 'almacenar/listaElementos.html' %}
-            <button type="button" class="btn btn-success" id="EnviarAlmc">Enviar</button>
+            {% include 'almacenar/modalConfirmar.html' %}
+            <form action= "/almacenar" method="POST">{% csrf_token %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <input type="hidden" name="ListaAgregados" value = "{{ListaAgregados}}">
+            <input type="hidden" name="accion" value = "Confirmar">
+            <button type="submit" class="btn btn-success" id="EnviarAlmc">Enviar</button>
+            </form>
             <form action= "/home" method="GET">{% csrf_token %}
                 <input type="hidden" name="accion" value = "delServ">
                 <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
@@ -40,6 +48,13 @@
 <script>
     $(document).ready(function () {
         $("#busqueda").modal("show");
+    });
+</script>
+{%endif %}
+{% if Momento == 'Confirmar'%}
+<script>
+    $(document).ready(function () {
+        $("#confirmar").modal("show");
     });
 </script>
 {%endif %}

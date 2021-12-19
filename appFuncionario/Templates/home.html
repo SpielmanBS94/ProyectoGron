@@ -5,6 +5,7 @@
     {% load static %}
     {% include 'super/modalIngresarRut.html' %}
     {% include 'super/modalBadRut.html' %}
+    {% include 'super/modalServConfirm.html' %}
     {% include 'agregarElemento/modalElementosInicio.html' %}
     <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
@@ -64,6 +65,13 @@
 <script>
     $(document).ready(function () {
         $("#badRut").modal("show");
+    });
+</script>
+{%endif %}
+{% if Momento == 'ServicioConfirm'%}
+<script>
+    $(document).ready(function () {
+        $("#ServicioConfirm").modal("show");
     });
 </script>
 {%endif %}

@@ -15,9 +15,9 @@
         </tr>
       </thead>
       <tbody>
-        {% for elemento in ListaAgregados %}
+        {% for detalle,elemento in ListaElementos %}
           <tr>
-            <td>{{elemento.getId}}</td>
+            <td>{{detalle}}</td>
             <td>{{elemento.getTipo}}</td>
             <td>{{elemento.getId}}</td>
           </tr>
