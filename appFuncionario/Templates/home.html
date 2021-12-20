@@ -6,6 +6,7 @@
     {% include 'super/modalIngresarRut.html' %}
     {% include 'super/modalBadRut.html' %}
     {% include 'super/modalServConfirm.html' %}
+    {% include 'super/modalServTerminado.html' %}
     {% include 'agregarElemento/modalElementosInicio.html' %}
     <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
@@ -25,8 +26,8 @@
         <form>
         <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#validarRut" id="btAlmacenar"></button>
         </form> 
-        <form action ="/registro" method="GET">{% csrf_token %}
-            <input class = "botonOpcion" type="button" value=""id="btRetirar" >
+        <form>
+            <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#validarRut" id="btRetirar"></button>
         </form>
         <form action ="/registro" method="GET">{% csrf_token %}
             <input class = "botonOpcion" type="button" value=""id="btReservar">
@@ -61,6 +62,7 @@
     </div>
 </body>
 </html>
+
 {% if Momento == 'badRut'%}
 <script>
     $(document).ready(function () {
@@ -68,10 +70,29 @@
     });
 </script>
 {%endif %}
-{% if Momento == 'ServicioConfirm'%}
+
+{% if Momento == 'servConfirm'%}
 <script>
     $(document).ready(function () {
         $("#ServicioConfirm").modal("show");
     });
 </script>
 {%endif %}
+
+{% if Momento == 'RetiroHecho'%}
+<script>
+    $(document).ready(function () {
+        $("#servicioFinalizado").modal("show");
+    });
+</script>
+{%endif %}
+
+<script>
+    $('#btAlmacenar').on('click', function() {
+    document.getElementById("formulario").action = "/almacenar";
+    });
+    
+    $('#btRetirar').on('click', function() {
+    document.getElementById("formulario").action = "/retirar";
+    });
+</script>

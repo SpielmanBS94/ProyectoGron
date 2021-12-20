@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/almacenamiento.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
+    <title>Almacenar</title>
+</head>
+<body>
+    <table id="NombreFecha">
+        <tr>
+            <td>Servicio de Retiro </td>
+            <td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Fecha}}</td>
+        </tr>
+    </table>
+    <div id="cuadrosIN">
+        {% include 'super/cliente.html' %}
+        <div class = "recuadroNT" id="busquedaIN">
+            {% include 'retirar/infoServ.html' %}
+        </div>
+        <div class = "recuadroNT" id="ElementosIN">
+            {% include 'retirar/listaElementos.html' %}
+            <form action= "/home" method="GET">{% csrf_token %}
+            <input type="hidden" name="accion" value = "servRetirado">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <button type="submit" class="btn btn-success" id="EnviarAlmc">Retirar</button>
+            </form>
+            <form action= "/home" method="GET">{% csrf_token %}
+                <input type="hidden" name="accion" value = "normal">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="CancelAlmc">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

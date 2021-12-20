@@ -17,8 +17,6 @@
             <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
             <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
             <h1> Pagina de registro Clientes</h1>
-            <form method = "post" enctype="multipart/form-data">
-                {% csrf_token %}
             <table>
                 {{FormCliente}}
                 <tr>

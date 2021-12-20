@@ -15,32 +15,32 @@ def obtenerFecha():
 def obtenerElementos(criterio,filtro):
     listaElementos = list()
     if(filtro == "Bicicleta"):
-        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False))
+        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False)).filter(Q(almacenado=False))
         for elemento in queryset:
             listaElementos.append(elemento)
     elif(filtro == "EPP"):
-        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio))
+        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio)).filter(Q(almacenado=False))
         for elemento in queryset4:
             listaElementos.append(elemento)
     elif(filtro == "Estacionamiento"):
-        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True))
+        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True)).filter(Q(almacenado=False))
         for elemento in queryset2:
             listaElementos.append(elemento)
     elif(filtro == "Herramienta"):
-        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio))
+        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio)).filter(Q(almacenado=False))
         for elemento in queryset3:
             listaElementos.append(elemento)
     else:
-        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False))
+        queryset=Bicicleta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(observaciones__contains=criterio)| Q(accesorios__contains=criterio)| Q(estado__contains=criterio)).filter(Q(activoFijo=False)).filter(Q(almacenado=False))
         for elemento in queryset:
             listaElementos.append(elemento)
-        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True))
+        queryset2=Estacionamiento.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(numero_estacionamiento__contains=criterio)| Q(area__contains=criterio)).filter(Q(disponibilidad=True)).filter(Q(almacenado=False))
         for elemento in queryset2:
             listaElementos.append(elemento)
-        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio))
+        queryset3=Herramienta.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(instrucciones__contains=criterio)| Q(estado__contains=criterio)).filter(Q(almacenado=False))
         for elemento in queryset3:
             listaElementos.append(elemento)
-        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio))
+        queryset4=EPP.objects.filter(Q(id__contains=criterio) | Q(nombre__contains=criterio) | Q(marca__contains=criterio)| Q(color__contains=criterio)| Q(talla__contains=criterio)).filter(Q(almacenado=False))
         for elemento in queryset4:
             listaElementos.append(elemento)
     return listaElementos
@@ -67,6 +67,15 @@ def home(request):
             serv = Servicio.objects.get(num_servicio=request.GET["serv"])
             func.servicioListo(serv)
             return render(request,'home.html',{"Funcionario":func, "Fecha":fecha})
+        if(request.GET["accion"]=="servRetirado"):
+            fecha =obtenerFecha()
+            func=Funcionario.objects.get(rut=request.GET["func"])
+            serv = Servicio.objects.get(num_servicio=request.GET["serv"])
+            func.servicioListo(serv)
+            detalles = Detalle.objects.filter(servicio=serv)
+            for det in detalles:
+                det.habilitar()
+            return render(request,'home.html',{"Funcionario":func, "Servicio":serv,"Fecha":fecha, "Momento":"RetiroHecho"})
         if(request.GET["accion"]=="delServ"):
             fecha =obtenerFecha()
             func = Funcionario.objects.get(rut=request.GET["func"])
@@ -81,7 +90,7 @@ def home(request):
             serv.delete()
             client.delete()
             return render(request,'home.html',{"Funcionario":func,"Fecha":fecha})
-        elif(request.GET["accion"]=="cancelElemento"):
+        elif(request.GET["accion"]=="normal"):
             fecha =obtenerFecha()
             func = Funcionario.objects.get(rut=request.GET["func"])
             return render(request,'home.html',{"Funcionario":func,"Fecha":fecha})
@@ -89,8 +98,12 @@ def home(request):
             fecha =obtenerFecha()
             func = Funcionario.objects.get(rut=request.GET["func"])
             serv = Servicio.objects.get(num_servicio=request.GET["serv"])
+            detalles = Detalle.objects.filter(servicio=serv)
+            for det in detalles:
+                det.deshabilitar()
+                print(det)
             confirmado =func.confirmarServicio("almacenamiento",serv)
-            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"ServicioConfirm"})
+            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"servConfirm"})
 
 def registro(request):
     func = Funcionario.objects.get(rut=request.POST["func"])
@@ -183,6 +196,25 @@ def almacenar(request):
             for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
                 listaTuplas.append((detalle,elemento))
             return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas ,"ListaAgregados":listaElementosAgregados,"Momento":"Agregados"})
+
+def retirar(request):
+    if(request.method == "GET"):
+        try:
+            func = Funcionario.objects.get(rut=request.GET["func"])
+            client = Cliente.objects.get(rut=request.GET["rutCliente"])
+            serv = Servicio.objects.get(tipo = "almacenamiento",Cliente=client,fecha_termino_servicio=None)
+            detalles = Detalle.objects.filter(servicio=serv)
+            listaElementosAgregados = list()
+            contador = 0
+            for det in detalles:
+                contador+=1
+                tupla = (det,det.getEleId())
+                listaElementosAgregados.append(tupla)
+            fecha =obtenerFecha()
+            return render(request,"retirar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Cantidad":contador})
+        except ObjectDoesNotExist:
+            fecha =obtenerFecha()
+            return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
 
 def guardar(request):
     fecha = obtenerFecha()

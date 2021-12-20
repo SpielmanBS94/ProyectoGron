@@ -38,7 +38,7 @@
             <tr><td><input class = "boton btn-primary" type="button" data-toggle="modal" data-target="#elegirElementoInicial" value="Cambiar Tipo" id="CambiarTipo"></td></tr>
         </form>
                 <form action= "/home" method="GET">{% csrf_token %}
-                    <input type="hidden" name="accion" value = "cancelElemento">
+                    <input type="hidden" name="accion" value = "normal">
                     <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
                     <tr><td><input class = "boton btn-danger" type="submit" value="Cancelar" id="cancelar"></td></tr>
                 </form> 

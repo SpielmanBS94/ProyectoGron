@@ -110,3 +110,11 @@ display: block;
 #textoConf{
     color: #ffffff;
 }
+#tablaInfo{
+    font-family: 'Overpass', sans-serif;
+    font-weight: normal;
+    color:#ffffff;
+    margin-left: 8%;
+    margin-top: 2%;
+    font-size: 160%;
+}

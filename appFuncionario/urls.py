@@ -10,5 +10,6 @@ urlpatterns = [
     path('home',home),
     path('registro',registro),
     path('almacenar',almacenar),
+    path('retirar',retirar),
     path('guardarElemento',guardar)
 ]

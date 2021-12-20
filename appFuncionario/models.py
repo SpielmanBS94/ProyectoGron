@@ -1,8 +1,15 @@
 from datetime import datetime
 from django.db import models
 from django.db.models.deletion import CASCADE,SET_NULL
+import locale
 # Create your models here.
 
+def obtenerFecha(fecha,tipo):
+    locale.setlocale(locale.LC_ALL, 'es-ES')
+    if(tipo =="fecha"):
+        return fecha.strftime("%A , %d-%m-%Y").capitalize()
+    else:
+        return fecha.strftime("%X")
 class Cliente(models.Model): 
 
     rut = models.CharField(max_length = 10 ,primary_key = True)
@@ -57,7 +64,7 @@ class Cliente(models.Model):
         return tarj.getNum()
 
     def getImg(self):
-        return self.fotoPerfil.url
+        return self.fotoPerfil
 
 class Funcionario(models.Model):
 
@@ -137,6 +144,7 @@ class Funcionario(models.Model):
             estado = elemForm.cleaned_data.get("estado")
             ele = Herramienta.objects.create(nombre=nombre,marca=marca,Funcionario=func,instrucciones=instrucciones,desechable=desechable,requiere_epp=requiere_epp,lista_epp=lista_epp,estado=estado)
             return ele
+
 class Tarjeta(models.Model):
 
     numero_tarjeta = models.BigAutoField(primary_key = True)
@@ -145,7 +153,6 @@ class Tarjeta(models.Model):
 
     def getNum(self):
         return self.numero_tarjeta
-
 
 class Servicio(models.Model):
 
@@ -163,7 +170,15 @@ class Servicio(models.Model):
 
     def getTipo(self):
         return self.num_servicio
-
+    def getFechaInicio(self):
+        fecha = obtenerFecha(self.fecha_inicio_servicio,"fecha")
+        return fecha
+    def getHoraInicio(self):
+        fecha = obtenerFecha(self.fecha_inicio_servicio,"hora")
+        return fecha
+    def getHoraTermino(self):
+        fecha = obtenerFecha(self.fecha_termino_servicio,"hora")
+        return fecha
     def solicitarDatos(self,datosCliente):
         rut = datosCliente.cleaned_data.get("rut")
         correo = datosCliente.cleaned_data.get("correo")
@@ -198,12 +213,12 @@ class Servicio(models.Model):
             det,creado  = Detalle.objects.get_or_create(servicio=self,herr=Herramienta.objects.get(id=idElemento))
         return det.getId()
 
-
 class Elemento(models.Model):
 
     id = models.BigAutoField(primary_key = True)
     nombre = models.CharField(max_length = 50)
     marca = models.CharField(max_length = 15, null=True, blank=True, default="Generico")
+    almacenado=models.BooleanField(default=False)
     fecha_ingreso = models.DateField(null=True, blank=True)
     fecha_baja = models.DateField(null=True, blank=True)
     rut_funcionario = models.ForeignKey(Funcionario, name = "Funcionario",on_delete = SET_NULL,default="",null=True)
@@ -214,7 +229,9 @@ class Elemento(models.Model):
     def confirmarRegistro(self):
         self.fecha_ingreso = datetime.now()
         self.save()
-    
+    def setAlmacenado(self,valor):
+        self.almacenado=valor
+        self.save()
     def getId(self):
         return self.id
     def getNombre(self):
@@ -234,7 +251,6 @@ class EPP(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "EPP"
-
 
 class Herramienta(Elemento):
     instrucciones=models.CharField(max_length=100)
@@ -292,3 +308,30 @@ class Detalle(models.Model):
 
     def getId(self):
         return self.id_detalle
+    def getEleId(self):
+        if(self.bici != None):
+            return self.bici
+        elif(self.epp != None):
+            return self.epp
+        elif(self.est != None):
+            return self.est
+        else:
+            return self.herr
+    def deshabilitar(self):
+        if(self.bici != None):
+            return self.bici.setAlmacenado(True)
+        elif(self.epp != None):
+            return self.epp.setAlmacenado(True)
+        elif(self.est != None):
+            return self.est.setAlmacenado(True)
+        else:
+            return self.herr.setAlmacenado(True)
+    def habilitar(self):
+        if(self.bici != None):
+            return self.bici.setAlmacenado(False)
+        elif(self.epp != None):
+            return self.epp.setAlmacenado(False)
+        elif(self.est != None):
+            return self.est.setAlmacenado(False)
+        else:
+            return self.herr.setAlmacenado(False)
