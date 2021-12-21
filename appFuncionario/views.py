@@ -249,6 +249,7 @@ def reservar(request):
                     servPrev.delete()
                 serv = Servicio.objects.get(tipo = "reserva",Cliente=client,fecha_termino_servicio=None)
                 detalles = Detalle.objects.filter(servicio=serv)
+                print(detalles)
                 listaElementosAgregados = list()
                 contador = 0
                 fechaReserva = serv.getFechaReserva()
@@ -273,7 +274,8 @@ def reservar(request):
                 return render(request,"reservar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Momento":"Inicio"})
             except ObjectDoesNotExist:
                 fecha =obtenerFecha()
-                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+                msj = "El rut ingresado no corresponde a ningun cliente, compruebe nuevamente o seleccione otra opcion"
+                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha, "Mensaje":msj})
     else:
         func = Funcionario.objects.get(rut=request.POST["func"])
         client = Cliente.objects.get(rut=request.POST["rutCliente"])

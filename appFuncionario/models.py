@@ -290,7 +290,7 @@ class EPP(Elemento):
     def getTipo(self):
         return "EPP"
     def __str__(self):
-        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
+        return "Elemento: N°(%s)  Tipo: %s" %(self.id,self.getTipo())
 
 class Herramienta(Elemento):
     instrucciones=models.CharField(max_length=100)
@@ -307,7 +307,7 @@ class Herramienta(Elemento):
     def getTipo(self):
         return "Herramienta"
     def __str__(self):
-        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
+        return "Elemento: N°(%s)  Tipo: %s" %(self.id,self.getTipo())
 
 class Bicicleta(Elemento):
     color=models.CharField(max_length=10)
@@ -324,7 +324,7 @@ class Bicicleta(Elemento):
     def getTipo(self):
         return "Bicicleta"
     def __str__(self):
-        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
+        return "Elemento: N°(%s)  Tipo: %s" %(self.id,self.getTipo())
 
 class Estacionamiento(Elemento):
     numero_estacionamiento=models.CharField(max_length=10)
@@ -339,7 +339,7 @@ class Estacionamiento(Elemento):
     def getTipo(self):
         return "Estacionamiento"
     def __str__(self):
-        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
+        return "Elemento: N°(%s)  Tipo: %s" %(self.id,self.getTipo())
 
 class Detalle(models.Model):
     id_detalle = models.BigAutoField(primary_key = True)
@@ -353,7 +353,7 @@ class Detalle(models.Model):
     num_servicio = models.ForeignKey(Servicio, name = "servicio",on_delete = CASCADE,default="",null=True)
 
     def __str__(self):
-        return "Detalle: N°%s  Servicio: %s Elemento %" %(self.id_detalle,self.servicio,self.getEleId().getId())
+        return "Detalle: N°%s  Servicio: %s Elemento %s" %(self.id_detalle,self.servicio,self.getEleId().getId())
 
     def getId(self):
         return self.id_detalle
