@@ -12,22 +12,22 @@ class BicicletaForm(forms.ModelForm):
     class Meta:
         model = Bicicleta
         fields = '__all__'
-        exclude = ['fecha_ingreso','fecha_baja','Funcionario']
+        exclude = ['fecha_ingreso','fecha_baja','Funcionario','almacenado']
 
 class EPPForm(forms.ModelForm):
     class Meta:
         model = EPP
         fields = '__all__'
-        exclude = ['fecha_ingreso','fecha_baja','Funcionario']
+        exclude = ['fecha_ingreso','fecha_baja','Funcionario','almacenado']
 
 class EstacionamientoForm(forms.ModelForm):
     class Meta:
         model = Estacionamiento
         fields = '__all__'
-        exclude = ['fecha_ingreso','fecha_baja','Funcionario']
+        exclude = ['fecha_ingreso','fecha_baja','Funcionario','almacenado']
 
 class HerramientaForm(forms.ModelForm):
     class Meta:
         model = Herramienta
         fields = '__all__'
-        exclude = ['fecha_ingreso','fecha_baja','Funcionario']
+        exclude = ['fecha_ingreso','fecha_baja','Funcionario','almacenado']

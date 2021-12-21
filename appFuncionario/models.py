@@ -169,6 +169,9 @@ class Tarjeta(models.Model):
     habilitada = models.BooleanField()
     rut_propietario = models.ForeignKey(Cliente, name = "Dueno",on_delete = CASCADE,default="")
 
+    def __str__(self):
+        return "Tarjeta N°: %s" %(self.numero_tarjeta)
+
     def getNum(self):
         return self.numero_tarjeta
 
@@ -186,7 +189,10 @@ class Servicio(models.Model):
     def getNum(self):
         return self.num_servicio
 
+    def __str__(self):
+        return "Servicio: N°%s " %(self.num_servicio)
     def getTipo(self):
+
         return self.num_servicio
     def setTipo(self,tipo):
         self.tipo = tipo
@@ -257,7 +263,7 @@ class Elemento(models.Model):
 
     class Meta:
         abstract = True
-
+    
     def confirmarRegistro(self):
         self.fecha_ingreso = datetime.now()
         self.save()
@@ -283,6 +289,8 @@ class EPP(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "EPP"
+    def __str__(self):
+        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
 
 class Herramienta(Elemento):
     instrucciones=models.CharField(max_length=100)
@@ -298,6 +306,8 @@ class Herramienta(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "Herramienta"
+    def __str__(self):
+        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
 
 class Bicicleta(Elemento):
     color=models.CharField(max_length=10)
@@ -313,6 +323,8 @@ class Bicicleta(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "Bicicleta"
+    def __str__(self):
+        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
 
 class Estacionamiento(Elemento):
     numero_estacionamiento=models.CharField(max_length=10)
@@ -326,6 +338,8 @@ class Estacionamiento(Elemento):
         return infos[posicion]
     def getTipo(self):
         return "Estacionamiento"
+    def __str__(self):
+        return "Elemento: N°%s  Tipo: %s" %(self.id,self.getTipo())
 
 class Detalle(models.Model):
     id_detalle = models.BigAutoField(primary_key = True)
@@ -337,6 +351,9 @@ class Detalle(models.Model):
     id_herr = models.ForeignKey(Herramienta, name = "herr",on_delete = SET_NULL, default="",null=True)
 
     num_servicio = models.ForeignKey(Servicio, name = "servicio",on_delete = CASCADE,default="",null=True)
+
+    def __str__(self):
+        return "Detalle: N°%s  Servicio: %s Elemento %" %(self.id_detalle,self.servicio,self.getEleId().getId())
 
     def getId(self):
         return self.id_detalle

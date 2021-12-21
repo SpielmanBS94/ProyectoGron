@@ -139,7 +139,7 @@ def registro(request):
     else:
         serv = Servicio.objects.get(num_servicio=request.POST["serv"])
         client = Cliente.objects.get(rut=request.POST["rutCliente"])
-        confirmacion = func.confirmarServicio("registro",serv)
+        confirmacion = func.confirmarServicio("registro",serv,None)
         if(confirmacion):
             numero = client.generarTarjeta()
             return render(request,"crearUsuario/registro.html",{"Funcionario":func,"Cliente":client,"Servicio":serv,"Numero":numero,"Momento":request.POST["Momento"]})
@@ -155,7 +155,8 @@ def almacenar(request):
             return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Momento":"Inicio"})
         except ObjectDoesNotExist:
             fecha =obtenerFecha()
-            return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+            msj = "El rut ingresado no corresponde a ningun cliente, compruebe nuevamente o seleccione otra opcion"
+            return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha,"Mensaje":msj})
     else:
         func = Funcionario.objects.get(rut=request.POST["func"])
         client = Cliente.objects.get(rut=request.POST["rutCliente"])
@@ -178,9 +179,10 @@ def almacenar(request):
             elif(tipo == "Herramienta"):
                 ele = Herramienta.objects.get(id=idEle)
             if(ele != None):
-                detalle = serv.crearDetalle(idEle,tipo)
-                listaDetalles.append(detalle)
-                listaElementosAgregados.append(ele)
+                if(ele not in listaElementosAgregados):
+                    detalle = serv.crearDetalle(idEle,tipo)
+                    listaDetalles.append(detalle)
+                    listaElementosAgregados.append(ele)
         if(request.POST["accion"] == "Buscar"):
             try:
                 listaElementosBuscados = obtenerElementos(request.POST["criterio"],request.POST["radio"])
@@ -208,9 +210,10 @@ def almacenar(request):
                 elif(tipo == "Herramienta"):
                     ele = Herramienta.objects.get(id=idEle)
                 if(ele != None):
-                    detalle = serv.crearDetalle(idEle,tipo)
-                    listaDetalles.append(detalle)
-                    listaElementosAgregados.append(ele)
+                    if(ele not in listaElementosAgregados):
+                        detalle = serv.crearDetalle(idEle,tipo)
+                        listaDetalles.append(detalle)
+                        listaElementosAgregados.append(ele)
             for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
                 listaTuplas.append((detalle,elemento))
             return render(request,"almacenar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas ,"ListaAgregados":listaElementosAgregados,"Momento":"Agregados"})
@@ -232,7 +235,8 @@ def retirar(request):
             return render(request,"retirar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Cantidad":contador})
         except ObjectDoesNotExist:
             fecha =obtenerFecha()
-            return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+            msj = "El rut ingresado no corresponde a ningun cliente o este no tiene un servicio de almacenamiento activo, compruebe nuevamente o seleccione otra opcion"
+            return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha, "Mensaje":msj})
 
 def reservar(request):
     if(request.method == "GET"):
@@ -257,7 +261,8 @@ def reservar(request):
                 return render(request,"reservar/princCargado.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Cantidad":contador, "FechaRese":fechaReserva,"HoraRese":horaInicio})
             except ObjectDoesNotExist:
                 fecha =obtenerFecha()
-                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+                msj = "El cliente no tiene un servicio de reserva que pueda ser cargado, compruebe nuevamente o seleccione otra opcion"
+                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha, "Mensaje":msj})
         else:
             try:
                 func = Funcionario.objects.get(rut=request.GET["func"])
@@ -370,9 +375,14 @@ def guardar(request):
                 eleForm = EstacionamientoForm(request.POST)
             else:
                 eleForm = HerramientaForm(request.POST)
-            if eleForm.is_valid():
-                ele = func.agregarElemento(eleForm,opcion,func)
-                return render(request,"agregarElemento/guardarElemento.html",{"Funcionario":func,"Opcion":opcion,"Elemento":ele,"Momento":"Enviado", "Fecha":fecha})
+            try: 
+                if(eleForm.is_valid()):
+                    ele = func.agregarElemento(eleForm,opcion,func)
+                    return render(request,"agregarElemento/guardarElemento.html",{"Funcionario":func,"Opcion":opcion,"Elemento":ele,"Momento":"Enviado", "Fecha":fecha})
+            except :
+                fecha =obtenerFecha()
+                msj="Algun dato ingresado para el elemento no es valido, favor intente nuevamente"
+                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha, "Mensaje":msj})
         elif(request.POST["Momento"] == "Registrado"):
             func = Funcionario.objects.get(rut=request.POST["func"])
             ele = None

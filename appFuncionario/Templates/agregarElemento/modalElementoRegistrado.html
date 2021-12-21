@@ -23,7 +23,7 @@
               <li style="float:left;"><button type="button" class="btn btn-danger" data-dismiss="modal" id="btnContinuar">Continuar</button></li>
             <form action= "/home" method="GET">{% csrf_token %}
                 <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
-              <input type="hidden" name="accion" value = "cancelElemento">
+              <input type="hidden" name="accion" value = "normal">
                 <li style="float:left; margin-left:-15%"><button type="sumbit" class="btn btn-success" id="cerrarMDHome">Home</button></li>
             </form>
             </ul>
