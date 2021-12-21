@@ -13,6 +13,7 @@
         </div>
         <form id ="formulario" action= "#" method="GET">{% csrf_token %}
         <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+        <input type="hidden" name="accion" value = "inicio">
         <div class="modal-body" id="bodyMD">
             <p id="textoMD">Escanee tarjeta o ingrese Rut sin puntos ni guíon</p>
             <input type="text" placeholder="Ejemplo:123456789" id="campoIngresoMD" name="rutCliente" required>

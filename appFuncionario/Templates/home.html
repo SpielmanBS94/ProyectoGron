@@ -11,6 +11,8 @@
     <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
     <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
     <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <form id ="logout" action="/"></form>
+    <form id ="modify" action="/admin/"></form>
     <title>Home</title>
 </head>
 <body>
@@ -29,13 +31,13 @@
         <form>
             <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#validarRut" id="btRetirar"></button>
         </form>
-        <form action ="/registro" method="GET">{% csrf_token %}
-            <input class = "botonOpcion" type="button" value=""id="btReservar">
+        <form>
+            <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#validarRut" id="btReservar"></button>
         </form>
-        <form action ="/registro" method="GET">{% csrf_token %}
+        <form>
             <input class = "botonOpcion" type="button" value=""id="btSolicitar">
         </form>
-        <form action ="/registro" method="GET">{% csrf_token %}
+        <form>
             <input class = "botonOpcion" type="button" value=""id="btPagar">
         </form>
     </div>
@@ -46,17 +48,17 @@
             <input type="hidden" name="Momento" value = "inicio">
             <input class = "botonOpcion" type="submit" value="" id="btCrearUsuario">
         </form> 
-        <form action ="/registro" method="GET">{% csrf_token %}
+        <form>
             <input class = "botonOpcion" type="button" value=""id="btActualizar" >
         </form>
         <form action ="/guardarElemento" method="GET">{% csrf_token %}
             <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
             <button class = "botonOpcion btn-primary" type="button" data-toggle="modal" data-target="#elegirElementoInicial" id="btIngresar"></button>
         </form> 
-        <form action ="/registro" method="GET">{% csrf_token %}
+        <form>
             <input class = "botonOpcion" type="button" value=""id="btIncidente">
         </form>
-        <form action ="/registro" method="GET">{% csrf_token %}
+        <form>
             <input class = "botonOpcion" type="button" value=""id="btGron">
         </form>
     </div>
@@ -88,6 +90,7 @@
 {%endif %}
 
 <script>
+    function noImplement(){alert("No Implementado aun");}
     $('#btAlmacenar').on('click', function() {
     document.getElementById("formulario").action = "/almacenar";
     });
@@ -95,4 +98,19 @@
     $('#btRetirar').on('click', function() {
     document.getElementById("formulario").action = "/retirar";
     });
+
+    $('#btReservar').on('click', function() {
+    document.getElementById("formulario").action = "/reservar";
+    });
+    $('#btLogout').on('click', function() {
+    document.getElementById("logout").submit();
+    });
+    $('#btCambiarFoto').on('click', noImplement)
+    $('#btCambiarPass').on('click', noImplement)
+    $('#btSolicitar').on('click', noImplement)
+    $('#btPagar').on('click', noImplement)
+    $('#btActualizar').on('click', noImplement)
+    $('#btIncidente').on('click', noImplement)
+    $('#btGron').on('click', noImplement)
+    
 </script>

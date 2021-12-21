@@ -1,0 +1,68 @@
+{% include 'reservar/modalBusquedaCriterio.html' %}
+<table id="tablaBusqueda">
+    <tr colspan="2">
+        <td>Busqueda</td>
+        <td>
+        <form id = "formReserv"action= "/reservar" method="POST">{% csrf_token %}   
+            <input type="text"id="campoBusqueda" placeholder="Ingrese Criterio de Busqueda" name="criterio" required>
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <input type="hidden" name="ListaAgregados" value = "{{ListaAgregados}}">
+            <input type="hidden" name="accion" value = "Buscar" id ="idAccion">
+        </td>
+        <td>
+            <button class = "boton" type="submit" id="botonBusqueda">Buscar</button>
+        </td>
+    </tr>
+    <tr>
+        <td><input type="radio"name="radio" value ="Bicicleta">Bicicleta</td>
+        <td><input type="radio"name="radio" value ="EPP">EPP</td>
+    </tr>
+    <tr>
+        <td><input type="radio"name="radio" value ="Herramienta">Herramienta</td>
+        <td><input type="radio"name="radio" value ="Estacionamiento">Estacionamiento</td>
+        </form>
+    </tr>
+    <tr>
+        <form action= "/reservar" method="POST">{% csrf_token %}
+        <td>Fecha</td>
+        <td><input type="text"id="campoFecha" placeholder="DD/MM/YY" name="fechaReserv" value = "{{FechaRese}}"required></td>
+        <td>
+            <input class="boton" type="button" value ="Cargar Reserva"id="botonCargar">
+        </td>
+    </tr>
+    <tr>
+        <td>Hora</td>
+        <td><input type="text"id="campoHora" placeholder="HH:MM" name="horaReserv" value = "{{HoraRese}}"required></td>
+        <td><input class="boton" type="button" value ="Concretar Reserva"id="botonConcretar"></td>
+    </tr>
+    <tr>
+        <td><input class="boton" type="button" value ="Elementos Frecuentes Cliente"id="botonClienteFrec"></td>
+    </tr>
+</table>
+
+<script>
+    $('#botonCargar').on('click', function() {
+    if(document.getElementById("EnviarAlmc").value == "1"){
+        document.getElementById("formReserv").method = "GET";
+        document.getElementById("idAccion").value = "cargar";
+        document.getElementById("formReserv").submit();
+    } else {
+        alert("Servicio ya cargado")
+    }
+    });
+    
+    $('#botonConcretar').on('click', function() {
+
+    if(document.getElementById("EnviarAlmc").value == "1"){
+        alert("Debe Cargar Un servicio primero para concretarlo")
+    }
+    else {
+    document.getElementById("formReserv").method = "GET";
+    document.getElementById("formReserv").action = "/home";
+    document.getElementById("idAccion").value = "IniServResv";
+    document.getElementById("formReserv").submit();
+    }
+    });
+</script>

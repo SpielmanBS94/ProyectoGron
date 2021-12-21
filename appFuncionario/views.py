@@ -101,9 +101,27 @@ def home(request):
             detalles = Detalle.objects.filter(servicio=serv)
             for det in detalles:
                 det.deshabilitar()
-                print(det)
-            confirmado =func.confirmarServicio("almacenamiento",serv)
-            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"servConfirm"})
+            confirmado =func.confirmarServicio("almacenamiento",serv,None)
+            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"servConfirm", "ServConfirm":"Almacenar"})
+        elif(request.GET["accion"]=="IniServResv"):
+            fecha =obtenerFecha()
+            func = Funcionario.objects.get(rut=request.GET["func"])
+            serv = Servicio.objects.get(num_servicio=request.GET["serv"])
+            serv.setTipo("almacenamiento")
+            detalles = Detalle.objects.filter(servicio=serv)
+            func.iniciarServicio("reserva",serv)
+            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"servConfirm", "ServConfirm":"reservaIni"})
+        elif(request.GET["accion"]=="ConfServReserva"):
+            fecha =obtenerFecha()
+            func = Funcionario.objects.get(rut=request.GET["func"])
+            serv = Servicio.objects.get(num_servicio=request.GET["serv"])
+            detalles = Detalle.objects.filter(servicio=serv)
+            locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+            datetime_obj = datetime.strptime(request.GET["fechaReserv"], '%d/%m/%y %H:%M')
+            for det in detalles:
+                det.deshabilitar()
+            confirmado =func.confirmarServicio("reserva",serv,datetime_obj)
+            return render(request,'home.html',{"Funcionario":func,"Servicio":serv,"Fecha":fecha, "Momento":"servConfirm", "ServConfirm":"reserva"})
 
 def registro(request):
     func = Funcionario.objects.get(rut=request.POST["func"])
@@ -215,6 +233,103 @@ def retirar(request):
         except ObjectDoesNotExist:
             fecha =obtenerFecha()
             return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+
+def reservar(request):
+    if(request.method == "GET"):
+        if(request.GET["accion"] == "cargar"):
+            try:
+                func = Funcionario.objects.get(rut=request.GET["func"])
+                client = Cliente.objects.get(rut=request.GET["rutCliente"])
+                servPrev = Servicio.objects.get(num_servicio=request.GET["serv"])
+                if(servPrev.getNoIniciado()):
+                    servPrev.delete()
+                serv = Servicio.objects.get(tipo = "reserva",Cliente=client,fecha_termino_servicio=None)
+                detalles = Detalle.objects.filter(servicio=serv)
+                listaElementosAgregados = list()
+                contador = 0
+                fechaReserva = serv.getFechaReserva()
+                horaInicio = serv.getHoraReserva()
+                for det in detalles:
+                    contador+=1
+                    tupla = (det,det.getEleId())
+                    listaElementosAgregados.append(tupla)
+                fecha =obtenerFecha()
+                return render(request,"reservar/princCargado.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Cantidad":contador, "FechaRese":fechaReserva,"HoraRese":horaInicio})
+            except ObjectDoesNotExist:
+                fecha =obtenerFecha()
+                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+        else:
+            try:
+                func = Funcionario.objects.get(rut=request.GET["func"])
+                client = Cliente.objects.get(rut=request.GET["rutCliente"])
+                serv = func.crearServicio("reserva",client)
+                fecha =obtenerFecha()
+                listaElementosAgregados = list()
+                return render(request,"reservar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaAgregados":listaElementosAgregados, "Momento":"Inicio"})
+            except ObjectDoesNotExist:
+                fecha =obtenerFecha()
+                return render(request,"home.html",{"Funcionario":func,"Momento":"badRut","Fecha":fecha})
+    else:
+        func = Funcionario.objects.get(rut=request.POST["func"])
+        client = Cliente.objects.get(rut=request.POST["rutCliente"])
+        serv = Servicio.objects.get(num_servicio=request.POST["serv"])
+        fecha =obtenerFecha()
+        lista = request.POST["ListaAgregados"].replace("[","").replace("]","").split(",")
+        listaElementosAgregados = list()
+        listaDetalles = list()
+        listaTuplas = list()
+        for elemento in lista:
+            tipo = elemento[elemento.find("<")+1:elemento.find(":")]
+            idEle = elemento[elemento.find("(")+1:elemento.find(")")]
+            ele = None
+            if(tipo == "Bicicleta"):
+                ele = Bicicleta.objects.get(id=idEle)
+            elif(tipo == "EPP"):
+                ele = EPP.objects.get(id=idEle)
+            elif(tipo == "Estacionamiento"):
+                 ele = Estacionamiento.objects.get(id=idEle)
+            elif(tipo == "Herramienta"):
+                ele = Herramienta.objects.get(id=idEle)
+            if(ele != None):
+                if(ele not in listaElementosAgregados):
+                    detalle = serv.crearDetalle(idEle,tipo)
+                    listaDetalles.append(detalle)
+                    listaElementosAgregados.append(ele)
+        if(request.POST["accion"] == "Buscar"):
+            try:
+                listaElementosBuscados = obtenerElementos(request.POST["criterio"],request.POST["radio"])
+            except:
+                listaElementosBuscados = obtenerElementos(request.POST["criterio"],"todo")
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"reservar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas,"ListaBuscados":listaElementosBuscados,"ListaAgregados":listaElementosAgregados, "Momento":"Busqueda"})
+        if(request.POST["accion"] == "Confirmar"):
+            datetime_str = request.POST["fechaReserv"] + " " + request.POST["horaReserv"]
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"reservar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas,"ListaAgregados":listaElementosAgregados, "Momento":"Confirmar", "FechaReserv":datetime_str})
+        elif(request.POST["accion"] == "Agregar"):
+            listaSelect = request.POST["seleccion"].split(",")
+            for elemento in listaSelect:
+                tipo = elemento[:elemento.find(":")]
+                idEle = elemento[elemento.find(":")+1:]
+                ele = None
+                if(tipo == "Bicicleta"):
+                    ele = Bicicleta.objects.get(id=idEle)
+                elif(tipo == "EPP"):
+                    ele = EPP.objects.get(id=idEle)
+                elif(tipo == "Estacionamiento"):
+                    ele = Estacionamiento.objects.get(id=idEle)
+                elif(tipo == "Herramienta"):
+                    ele = Herramienta.objects.get(id=idEle)
+                if(ele != None):
+                    if(ele not in listaElementosAgregados):
+                        detalle = serv.crearDetalle(idEle,tipo)
+                        listaDetalles.append(detalle)
+                        listaElementosAgregados.append(ele)
+            for detalle,elemento in zip(listaDetalles,listaElementosAgregados):
+                listaTuplas.append((detalle,elemento))
+            return render(request,"reservar/principal.html",{"Funcionario":func,"Servicio":serv,"Cliente":client,"Fecha":fecha, "ListaElementos":listaTuplas ,"ListaAgregados":listaElementosAgregados,"Momento":"Agregados"})
 
 def guardar(request):
     fecha = obtenerFecha()

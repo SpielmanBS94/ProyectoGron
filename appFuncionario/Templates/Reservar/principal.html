@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{% static 'appFuncionario/reserva.css' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/style.css' %}">
+    <link rel="icon" type="image/jpg" href="{% static 'general/imagenes/logo.png' %}">
+    <link rel="stylesheet"  href="{% static 'appFuncionario/estiloModalRut.css' %}">
+    <title>Reservar</title>
+</head>
+<body>
+    <table id="NombreFecha">
+        <tr>
+            <td>Servicio de Reserva </td>
+            <td >N°{{Servicio.getNum}}</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Fecha}}</td>
+        </tr>
+    </table>
+    <div id="cuadrosIN">
+        {% include 'super/cliente.html' %}
+        <div class = "recuadroNT" id="busquedaIN">
+            {% include 'reservar/busquedaElementos.html' %}
+        </div>
+        <div class = "recuadroNT" id="ElementosIN">
+            {% include 'reservar/listaElementos.html' %}
+            <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+            <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+            <input type="hidden" name="rutCliente" value = "{{Cliente.getRut}}">
+            <input type="hidden" name="ListaAgregados" value = "{{ListaAgregados}}">
+            <input type="hidden" name="accion" value = "Confirmar">
+            <button type="submit" class="btn btn-success" id="EnviarAlmc" value ="1">Reservar</button>
+            </form>
+            {% include 'reservar/modalConfirmar.html' %}
+            <form action= "/home" method="GET">{% csrf_token %}
+                <input type="hidden" name="accion" value = "delServ">
+                <input type="hidden" name="serv" value = "{{Servicio.getNum}}">
+                <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="CancelAlmc">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+{% if Momento == 'Busqueda'%}
+<script>
+    $(document).ready(function () {
+        $("#busqueda").modal("show");
+    });
+</script>
+{%endif %}
+{% if Momento == 'Confirmar'%}
+<script>
+    $(document).ready(function () {
+        $("#confirmar").modal("show");
+    });
+</script>
+{%endif %}

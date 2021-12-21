@@ -13,7 +13,17 @@
         </div>   
         <input type="hidden" name="func" value = "{{Funcionario.getRut}}">
         <div class="modal-body" id="bodyMD">
-            <p id="textoMD">El servicio numero : {{Servicio.getNum}} se inicio correctamente</p>
+          {% if ServConfirm == 'Almacenar'%}
+            <p id="textoMD">El servicio numero : {{Servicio.getNum}} de Almacenamiento se inicio correctamente</p>
+          {% endif %}
+          
+          {% if ServConfirm == 'reservaIni'%}
+            <p id="textoMD">El servicio numero : {{Servicio.getNum}} se ha iniciado correctamente el {{Servicio.getFechaInicio}} a las {{Servicio.getHoraInicio}} </p>
+          {% endif %}
+
+          {% if ServConfirm == 'reserva'%}
+            <p id="textoMD">El servicio numero : {{Servicio.getNum}} se reservado correctamente para el {{Servicio.getFechaReserva}} a las {{Servicio.getHoraReserva}} </p>
+          {% endif %}
         </div>
         <div class="modal-footer" id="footerMD">
           <button type="button" class="btn btn-info" data-dismiss="modal" id="cancelMD">Cerrar</button>

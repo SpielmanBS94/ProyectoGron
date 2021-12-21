@@ -7,9 +7,9 @@ import locale
 def obtenerFecha(fecha,tipo):
     locale.setlocale(locale.LC_ALL, 'es-ES')
     if(tipo =="fecha"):
-        return fecha.strftime("%A , %d-%m-%Y").capitalize()
+        return fecha.strftime("%d/%m/%y").capitalize()
     else:
-        return fecha.strftime("%X")
+        return fecha.strftime("%H:%M")
 class Cliente(models.Model): 
 
     rut = models.CharField(max_length = 10 ,primary_key = True)
@@ -83,10 +83,11 @@ class Funcionario(models.Model):
         if(tipo == "registro"):
             servicio=Servicio.objects.create(Funcionario=self,tipo=tipo,Cliente=None)
             return servicio
-        elif(tipo == "almacenamiento"):
+        elif(tipo == "almacenamiento" or tipo == "reserva"):
             servicio=Servicio.objects.create(Funcionario=self,tipo=tipo,Cliente=cliente)
             return servicio
-    def confirmarServicio(self,tipo,servicioConfirm):
+
+    def confirmarServicio(self,tipo,servicioConfirm,fecha):
         if(tipo=="registro"):
             servicioConfirm.fecha_reserva_servicio=datetime.now()
             servicioConfirm.fecha_inicio_servicio=datetime.now()
@@ -95,12 +96,29 @@ class Funcionario(models.Model):
             servicioConfirm.fecha_reserva_servicio=datetime.now()
             servicioConfirm.fecha_inicio_servicio=datetime.now()
             servicioConfirm.save()
-        listaElementos = list()
-        queryset=Detalle.objects.filter(servicio=servicioConfirm)
-        for detalle in queryset:
-            detalle.fecha_hora_entrega=datetime.now()
-            detalle.fecha_hora_entrega_real=datetime.now()
-            detalle.save()
+            listaElementos = list()
+            queryset=Detalle.objects.filter(servicio=servicioConfirm)
+            for detalle in queryset:
+                detalle.fecha_hora_entrega=datetime.now()
+                detalle.fecha_hora_entrega_real=datetime.now()
+                detalle.save()
+        elif(tipo== "reserva"):
+            servicioConfirm.fecha_reserva_servicio=fecha
+            servicioConfirm.save()
+            queryset=Detalle.objects.filter(servicio=servicioConfirm)
+            for detalle in queryset:
+                detalle.fecha_hora_entrega=fecha
+                detalle.save()
+        return True
+
+    def iniciarServicio(self,tipo,servicioIni):
+        if(tipo== "reserva"):
+            servicioIni.fecha_inicio_servicio=datetime.now()
+            servicioIni.save()
+            queryset=Detalle.objects.filter(servicio=servicioIni)
+            for detalle in queryset:
+                detalle.fecha_hora_entrega_real = datetime.now()
+                detalle.save()
         return True
     def servicioListo(self,servicio):
         servicio.fecha_termino_servicio=datetime.now()
@@ -170,11 +188,25 @@ class Servicio(models.Model):
 
     def getTipo(self):
         return self.num_servicio
+    def setTipo(self,tipo):
+        self.tipo = tipo
+        self.save()
+    def getNoIniciado(self):
+        if(self.fecha_reserva_servicio == None):
+            return True
+        else:
+            return False
     def getFechaInicio(self):
         fecha = obtenerFecha(self.fecha_inicio_servicio,"fecha")
         return fecha
     def getHoraInicio(self):
         fecha = obtenerFecha(self.fecha_inicio_servicio,"hora")
+        return fecha
+    def getFechaReserva(self):
+        fecha = obtenerFecha(self.fecha_reserva_servicio,"fecha")
+        return fecha
+    def getHoraReserva(self):
+        fecha = obtenerFecha(self.fecha_reserva_servicio,"hora")
         return fecha
     def getHoraTermino(self):
         fecha = obtenerFecha(self.fecha_termino_servicio,"hora")
